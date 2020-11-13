@@ -32,29 +32,40 @@ def extract_class_name_from_model_filename(model_filename: str) -> str:
 
 
 def main(args):
-  models = [load_model(fn, args) for fn in args.models]
-  model_names = [extract_class_name_from_model_filename(fn) for fn in args.models]
-
-  print_model_names(model_names)
-
+  # load all individual sequences
   y_true = []
-  y_pred = []
-
+  y_seqs = []
+  prob_rows = []  # initialized with dummy prob array per sequence
   for sequences_filename in args.sequences_filenames:
-    class_name = extract_class_name_from_sequence_filename(sequences_filename)
-
+    seq_class_name = extract_class_name_from_sequence_filename(sequences_filename)
     seqs = load_sequences(sequences_filename, args.verbose)
-
-    if args.verbose:
-      print('\n{} ({} sequences):'.format(sequences_filename, len(seqs)))
-
     for seq in seqs:
-      # print('seq={}'.format(seq))
-      probs = [m.log_probability(seq) for m in models]
-      max_m = np.argmax(probs)
+      y_true.append(seq_class_name)
+      y_seqs.append(seq)
+      prob_rows.append([0 for _ in args.models])
 
-      y_true.append(class_name)
-      y_pred.append(model_names[max_m])
+  print('loaded {} sequences'.format(len(y_seqs)))
+
+  # matrix of probabilities
+  prob_rows_index = 0
+
+  # with one model loaded at a time (for memory constraint reasons),
+  # get the probability for every loaded sequence:
+  for model_index, fn in enumerate(args.models):
+    model_name = extract_class_name_from_model_filename(fn)
+    print('evaluating probabilities with model {}'.format(model_name))
+    model = load_model(fn, args)
+
+    for seq_class_name, seq, prob_row in zip(y_true, y_seqs, prob_rows):
+      prob = model.log_probability(seq)
+      prob_row[model_index] = prob
+
+  # get the predictions:
+  model_names = [extract_class_name_from_model_filename(fn) for fn in args.models]
+  y_pred = []
+  for probs in prob_rows:
+    max_m = np.argmax(probs)
+    y_pred.append(model_names[max_m])
 
   print('\nconfusion matrix:')
   print(metrics.confusion_matrix(y_true, y_pred))

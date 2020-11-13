@@ -56,7 +56,9 @@ def main(args):
   model = train_model(order, M, class_name, seqs)
   # print(model)
 
-  save_model(model, 'data/class_{}_order_{}_mchain.json'.format(class_name, order))
+  save_model(model, '{}/class_{}_order_{}_mchain.json'.format(
+    args.dest_dir, class_name, order
+  ))
 
 
 def parse_args():
@@ -71,6 +73,7 @@ def parse_args():
     parser.add_argument('-M',  metavar='#')
     parser.add_argument('--class-name', metavar='class')
     parser.add_argument('--sequences-filename')
+    parser.add_argument('--dest-dir')
 
     args = parser.parse_args()
 

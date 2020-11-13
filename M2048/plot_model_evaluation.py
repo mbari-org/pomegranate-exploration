@@ -2,7 +2,7 @@
 
 #  Some _very_ preliminary (and incorrect) precision/recall & ROC plotting:
 #
-#      ../run.sh ./hmm_classify.sh 3 --evaluate-models
+#      ../run-pom.sh ./hmm_classify.sh 3 --evaluate-models
 #      model evaluation saved to model_evaluation.pickle
 #
 #  The following on my host (due to already available dependencies):

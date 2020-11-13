@@ -31,7 +31,7 @@ at least for the time being:
 
     docker build -t pomegranade .
 
-Script `run.sh` is a helper to run any of the scripts in the container with
+Script `run-pom.sh` is a helper to run any of the scripts in the container with
 the usual volume mapping mechanism to work with host files.
 
     export POME_EXPLORATION_DIR=`pwd`
@@ -65,11 +65,11 @@ Example: `M32_TRAIN_sequences_A.pickle`
 ## HMM training
 
     cd M2048/
-    ../run.sh ./hmm_train.sh 3
+    ../run-pom.sh ./hmm_train.sh 3
 
 ## HMM classification
 
-    ../run.sh ./hmm_classify.sh 3
+    ../run-pom.sh ./hmm_classify.sh 3
 
             A        Bm         C         E         F        G2        I3        II
 
@@ -102,11 +102,11 @@ Example: `M32_TRAIN_sequences_A.pickle`
 ## 1-Order Markov chain training
 
     cd M512/
-    ../run.sh ./mchain_train.sh 1
+    ../run-pom.sh ./mchain_train.sh 1
 
 ## 1-Order Markov chain classification
 
-    ../run.sh ./mchain_classify.sh 1
+    ../run-pom.sh ./mchain_classify.sh 1
 
              A        Bm         C         E         F        G2        I3        II
 

@@ -89,7 +89,9 @@ def main(args):
   # for s in seqs:
   #   print('   {}'.format(model.log_probability(s)))
 
-  save_model(model, 'data/N{}_M{}_{}_hmm.json'.format(N, M, class_name))
+  save_model(model, '{}/N{}_M{}_{}_hmm.json'.format(
+    args.dest_dir, N, M, class_name
+  ))
 
 
 def parse_args():
@@ -104,6 +106,7 @@ def parse_args():
     parser.add_argument('-M',  metavar='#')
     parser.add_argument('--class-name', metavar='class')
     parser.add_argument('--sequences-filename')
+    parser.add_argument('--dest-dir')
 
     args = parser.parse_args()
 
