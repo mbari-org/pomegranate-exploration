@@ -73,6 +73,7 @@ def main(args):
   print('\nclassification report:')
   print(metrics.classification_report(y_true, y_pred, digits=4))
 
+  print('MCC = {}'.format(metrics.matthews_corrcoef(y_true, y_pred)))
 
 def parse_args():
     import argparse
